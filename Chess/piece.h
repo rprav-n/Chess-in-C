@@ -3,12 +3,19 @@
 
 enum Type
 {
-	PAWN,
-	ROOK, // elephant
-	BISHOP,
-	KNIGHT, // horse
-	KING,
-	QUEEN
+	W_PAWN,
+	W_ROOK, // elephant
+	W_BISHOP,
+	W_KNIGHT, // horse
+	W_KING,
+	W_QUEEN,
+
+	B_PAWN,
+	B_ROOK, // elephant
+	B_BISHOP,
+	B_KNIGHT, // horse
+	B_KING,
+	B_QUEEN
 };
 
 typedef struct 
@@ -17,7 +24,5 @@ typedef struct
 	enum Type type;
 	Rectangle src;
 	Rectangle dest;
-	bool is_black;
 } Piece;
 
-void draw_piece(Texture2D atlas_texture, Piece piece);
