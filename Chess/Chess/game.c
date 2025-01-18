@@ -2,11 +2,12 @@
 #include "board.h"
 #include "piece.h"
 #include <stdio.h>
+#include <math.h>
 
-void game_start(Game game)
+void game_start(Game* game)
 {
-	InitWindow(game.screen_width, game.screen_height, game.name);
-	game.atlas_texture = LoadTexture("..\\Assets\\atlas.png");
+	InitWindow(game->screen_width, game->screen_height, game->name);
+	game->atlas_texture = LoadTexture("..\\..\\Assets\\atlas.png");
 
 	Board board = { 
 		.grid = {
@@ -22,14 +23,16 @@ void game_start(Game game)
 	};
 	board.white_src = (Rectangle){ 432, 0, 72, 72 };
 	board.black_src = (Rectangle){ 432, 72, 72, 72 };
+	board.mouse_grid_pos = (Vector2){ 0 };
 	
 	for (size_t j = 0; j < 2; j++)
 	{
-		for (size_t i = 0; i < game.atlas_texture.width / 72; i++)
+		for (size_t i = 0; i < game->atlas_texture.width / 72; i++)
 		{
 			Piece piece;
 			piece.src = (Rectangle){ i * 72, j * 72, 72, 72 };
-			piece.dest = (Rectangle){ 0 };
+			piece.is_moved_once = false;
+			piece.selected = false;
 			switch (i)
 			{
 			case 0:
@@ -57,17 +60,46 @@ void game_start(Game game)
 		}
 	}
 
-	game.board = board;
+	for (int i = 0; i < 8; i++)
+	{
+		for (int j = 0; j < 8; j++)
+		{
+			int grid_type = board.grid[i][j];
+			Piece piece = { 0 };
+			piece.type = grid_type;
+			piece.selected = false;
+			if (grid_type != -1)
+			{
+				for (int k = 0; k < 12; k++)
+				{
+					Piece p =  board.total_pieces[k];
+					if (p.type == piece.type) 
+					{
+						piece.src = p.src;
+						piece.dest = (Rectangle){ j*72.f, i*72.f, 72.f, 72.f};
+					}
+				}
+			}
+			else
+			{
+				piece.src = (Rectangle){ 0 };
+				piece.dest = (Rectangle){ j * 72.f, i * 72.f, 0.f, 0.f};
+			}
+			board.pieces[i][j] = piece;
+		}
+	}
+
+	game->board = board;
 
 	SetTargetFPS(60);
 	while (!WindowShouldClose())
 	{
 		float dt = GetFrameTime();
 
-		game_update(dt);
+		game_update(dt, game);
 
 		BeginDrawing();
-		game_draw(game);
+		game_draw(*game);
 		EndDrawing();
 		
 	}
@@ -80,9 +112,10 @@ void game_end()
 	CloseWindow();
 }
 
-void game_update(float dt)
+void game_update(float dt, Game* game)
 {
-	
+	Board* board = &(game->board);
+	update_board(board);
 }
 
 void game_draw(Game game)
@@ -90,3 +123,4 @@ void game_draw(Game game)
 	draw_board(game.atlas_texture, game.board);
 	draw_pieces(game.atlas_texture, game.board);
 }
+

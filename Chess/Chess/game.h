@@ -13,8 +13,8 @@ typedef struct
 	Piece peice; // single piece for testing
 }Game;
 
-void game_start(Game game);
+void game_start(Game* game);
 void game_end();
 
-void game_update(float dt);
+void game_update(float dt, Game* game);
 void game_draw(Game game);

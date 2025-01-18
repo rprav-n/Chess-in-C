@@ -8,5 +8,5 @@ int main()
 	game.screen_height = 576;
 	game.screen_width = 576;
 	game.name = "Chess";
-	game_start(game);
+	game_start(&game);
 }

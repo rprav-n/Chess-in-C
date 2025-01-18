@@ -21,7 +21,7 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{6192e504-ca46-4546-ac95-6c9d8535d187}</ProjectGuid>
+    <ProjectGuid>{4dcf7c41-5064-47e5-a147-9040143e13ce}</ProjectGuid>
     <RootNamespace>Chess</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
@@ -129,7 +129,6 @@
   <ItemGroup>
     <ClCompile Include="board.c" />
     <ClCompile Include="game.c" />
-    <ClCompile Include="game.h" />
     <ClCompile Include="main.c" />
     <ClCompile Include="piece.c" />
   </ItemGroup>
@@ -137,20 +136,21 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="..\Assets\atlas.png" />
+    <ClInclude Include="board.h" />
+    <ClInclude Include="game.h" />
+    <ClInclude Include="piece.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="board.h" />
-    <ClInclude Include="piece.h" />
+    <Image Include="..\..\Assets\atlas.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
-    <Import Project="packages\raylib.5.0.0\build\native\raylib.targets" Condition="Exists('packages\raylib.5.0.0\build\native\raylib.targets')" />
+    <Import Project="..\packages\raylib.5.0.0\build\native\raylib.targets" Condition="Exists('..\packages\raylib.5.0.0\build\native\raylib.targets')" />
   </ImportGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('packages\raylib.5.0.0\build\native\raylib.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\raylib.5.0.0\build\native\raylib.targets'))" />
+    <Error Condition="!Exists('..\packages\raylib.5.0.0\build\native\raylib.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\raylib.5.0.0\build\native\raylib.targets'))" />
   </Target>
 </Project>
