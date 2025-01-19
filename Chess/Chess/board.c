@@ -357,7 +357,6 @@ void update_board(Board* board)
 	// ability to move the selected piece
 	if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && board->picked)
 	{
-		reset_capture_pos(board);
 		Piece selected_piece = board->selected_piece;
 		int i = board->selected_piece.pos.x;
 		int j = board->selected_piece.pos.y;
@@ -367,13 +366,20 @@ void update_board(Board* board)
 		Piece placement_piece = board->pieces[x][y];
 		bool possible = false;
 
-		printf("placement_piece %f %f\n", placement_piece.pos.x, placement_piece.pos.y);
-
 		// check placement_piece x, y is present in board->possible_moves array 
 		for (int k = 0; k < 64; k++)
 		{
 			Vector2 possible_move = board->possible_moves[k];
 			if (placement_piece.pos.x == possible_move.x && placement_piece.pos.y == possible_move.y)
+			{
+				possible = true;
+				break;
+			}
+		}
+		for (int k = 0; k < 10; k++)
+		{
+			Vector2 capture_pos = board->capture_pos[k];
+			if (placement_piece.pos.x == capture_pos.x && placement_piece.pos.y == capture_pos.y)
 			{
 				possible = true;
 				break;
@@ -403,6 +409,7 @@ void update_board(Board* board)
 				.is_moved_once = true,
 			};
 		}
+		reset_capture_pos(board);
 	}
 
 	if (board->selected_piece.selected)
@@ -691,9 +698,7 @@ void draw_possible_moves(Board board)
 	{
 		Vector2 possible_move = board.possible_moves[i];
 
-		//DrawRectangleV((Vector2) { possible_move.x * 72, possible_move.y * 72 }, (Vector2){72, 72}, GetColor(0xb1a7fcff));
-
-		DrawCircleV((Vector2) { possible_move.x * 72 + (72 / 2), possible_move.y * 72 + 72 / 2 }, 30.f, GetColor(0xb1a7fcff));
+		DrawCircleV((Vector2) { possible_move.x * 72 + (72 / 2), possible_move.y * 72 + 72 / 2 }, 10.f, GetColor(0xb1a7fcff));
 	}
 }
 
