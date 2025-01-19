@@ -24,7 +24,11 @@ void game_start(Game* game)
 	board.white_src = (Rectangle){ 432, 0, 72, 72 };
 	board.black_src = (Rectangle){ 432, 72, 72, 72 };
 	board.mouse_grid_pos = (Vector2){ 0 };
-	
+	for (int i = 0; i < 10; i++)
+	{
+		board.capture_pos[i] = (Vector2){ -1, -1 };
+	}
+
 	for (size_t j = 0; j < 2; j++)
 	{
 		for (size_t i = 0; i < game->atlas_texture.width / 72; i++)
@@ -68,6 +72,7 @@ void game_start(Game* game)
 			Piece piece = { 0 };
 			piece.type = grid_type;
 			piece.selected = false;
+			piece.pos = (Vector2){ j, i };
 			if (grid_type != -1)
 			{
 				for (int k = 0; k < 12; k++)
@@ -84,8 +89,9 @@ void game_start(Game* game)
 			{
 				piece.src = (Rectangle){ 0 };
 				piece.dest = (Rectangle){ j * 72.f, i * 72.f, 0.f, 0.f};
+				
 			}
-			board.pieces[i][j] = piece;
+			board.pieces[j][i] = piece;
 		}
 	}
 
@@ -121,6 +127,9 @@ void game_update(float dt, Game* game)
 void game_draw(Game game)
 {
 	draw_board(game.atlas_texture, game.board);
+	draw_possible_moves(game.board);
+	draw_capture_pos(game.board);
 	draw_pieces(game.atlas_texture, game.board);
+	
 }
 

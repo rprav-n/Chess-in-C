@@ -23,6 +23,7 @@ typedef struct
 	enum Type type;
 	Rectangle src;
 	Rectangle dest;
+	Vector2 pos;
 	bool is_moved_once; // for pawn only
 	bool selected;
 } Piece;
